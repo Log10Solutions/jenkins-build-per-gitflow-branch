@@ -163,12 +163,11 @@ class JenkinsJobManager {
 		return this.gitApi
 	}
 
-	Object iniBranchSuffix() {
+	void initBranchSuffix() {
 		if(branchSeparator != "/") {
 			branchSuffixMatch[templateFeatureSuffix] = "$templateFeatureSuffix$branchSeparator"
 			branchSuffixMatch[templateReleaseSuffix] = "$templateReleaseSuffix$branchSeparator"
 			branchSuffixMatch[templateHotfixSuffix] = "$templateHotfixSuffix$branchSeparator"
 		}
-		return this.branchSuffixMatch
 	}
 }
