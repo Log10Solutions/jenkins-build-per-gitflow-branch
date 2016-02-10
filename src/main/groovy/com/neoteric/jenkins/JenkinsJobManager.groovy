@@ -16,17 +16,13 @@ class JenkinsJobManager {
 	Boolean noDelete = false
 	Boolean startOnCreate = false
 
-	String featureSuffix = "feature-"
-	String hotfixSuffix = "hotfix-"
-	String releaseSuffix = "release-"
+	String branchSeparator = "/"
 
 	String templateFeatureSuffix = "feature"
 	String templateHotfixSuffix = "hotfix"
 	String templateReleaseSuffix = "release"
 
-	def branchSuffixMatch = [(templateFeatureSuffix): featureSuffix,
-							 (templateHotfixSuffix) : hotfixSuffix,
-							 (templateReleaseSuffix): releaseSuffix]
+	def branchSuffixMatch = []
 
 	JenkinsApi jenkinsApi
 	GitApi gitApi
@@ -35,10 +31,17 @@ class JenkinsJobManager {
 		for (property in props) {
 			this."${property.key}" = property.value
 		}
+		initBranchSuffix()
 		initJenkinsApi()
 		initGitApi()
 	}
 
+	void iniBranchSuffix() {
+		branchSuffixMatch = [(templateFeatureSuffix): templateFeatureSuffix +  branchSeparator,
+			(templateHotfixSuffix) : templateHotfixSuffix +  branchSeparator,
+			(templateReleaseSuffix): templateReleaseSuffix +  branchSeparator]
+	}
+	
 	void syncWithRepo() {
 		List<String> allBranchNames = gitApi.branchNames
 		println "-------------------------------------"
