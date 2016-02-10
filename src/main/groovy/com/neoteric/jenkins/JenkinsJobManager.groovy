@@ -22,7 +22,11 @@ class JenkinsJobManager {
 	String templateHotfixSuffix = "hotfix"
 	String templateReleaseSuffix = "release"
 
-	def branchSuffixMatch = []
+	def branchSuffixMatch = [
+		(templateFeatureSuffix): "$templateFeatureSuffix$branchSeparator",
+		(templateHotfixSuffix) : "$templateHotfixSuffix$branchSeparator",
+		(templateReleaseSuffix): "$templateReleaseSuffix$branchSeparator"
+	]
 
 	JenkinsApi jenkinsApi
 	GitApi gitApi
@@ -36,12 +40,6 @@ class JenkinsJobManager {
 		initGitApi()
 	}
 
-	void iniBranchSuffix() {
-		branchSuffixMatch = [(templateFeatureSuffix): templateFeatureSuffix +  branchSeparator,
-			(templateHotfixSuffix) : templateHotfixSuffix +  branchSeparator,
-			(templateReleaseSuffix): templateReleaseSuffix +  branchSeparator]
-	}
-	
 	void syncWithRepo() {
 		List<String> allBranchNames = gitApi.branchNames
 		println "-------------------------------------"
@@ -131,7 +129,7 @@ class JenkinsJobManager {
 				jenkinsApi.startJob(missingJob)
 			}
 		}
-		
+
 		if (!noDelete && jobsToDelete) {
 			println "Deleting deprecated jobs:\n\t${jobsToDelete.join('\n\t')}"
 			jobsToDelete.each { String jobName ->
@@ -139,7 +137,7 @@ class JenkinsJobManager {
 			}
 		}
 	}
-	
+
 	JenkinsApi initJenkinsApi() {
 		if (!jenkinsApi) {
 			assert jenkinsUrl != null
@@ -163,5 +161,14 @@ class JenkinsJobManager {
 		}
 
 		return this.gitApi
+	}
+
+	Object iniBranchSuffix() {
+		if(branchSeparator != "/") {
+			branchSuffixMatch[templateFeatureSuffix] = "$templateFeatureSuffix$branchSeparator"
+			branchSuffixMatch[templateReleaseSuffix] = "$templateReleaseSuffix$branchSeparator"
+			branchSuffixMatch[templateHotfixSuffix] = "$templateHotfixSuffix$branchSeparator"
+		}
+		return this.branchSuffixMatch
 	}
 }
