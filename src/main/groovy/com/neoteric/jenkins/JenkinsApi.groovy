@@ -19,7 +19,8 @@ class JenkinsApi {
 	String jenkinsServerUrl
 	RESTClient restClient
 	HttpRequestInterceptor requestInterceptor
-	boolean findCrumb = true
+	//TODO get it from the jenkins configuration
+	boolean findCrumb = false
 	def crumbInfo
 
 	public void setJenkinsServerUrl(String jenkinsServerUrl) {
