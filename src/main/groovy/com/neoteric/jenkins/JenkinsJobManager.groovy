@@ -101,7 +101,7 @@ class JenkinsJobManager {
 				}
 				println "-------> Expected jobs:"
 				expectedJobsPerBranch.each { println "           $it" }
-				List<String> jobNamesPerBranch = jobNames.findAll{ it.endsWith(branchToProcess.replaceAll('/', '_')) }
+				List<String> jobNamesPerBranch = jobNames.findAll{ it.endsWith(branchToProcess.replaceAll(branchSeparator, '_')) }
 				println "-------> Job Names per branch:"
 				jobNamesPerBranch.each { println "           $it" }
 				List<ConcreteJob> missingJobsPerBranch = expectedJobsPerBranch.findAll { expectedJob ->
