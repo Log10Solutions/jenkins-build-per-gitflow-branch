@@ -86,6 +86,7 @@ class JenkinsJobManager {
 
 		List<ConcreteJob> missingJobs = [];
 		List<String> jobsToDelete = [];
+		List<String> jobsExpected = [];
 
 		templateJobsByBranch.keySet().each { templateBranchToProcess ->
 			println "-> Checking $templateBranchToProcess branches"
@@ -102,6 +103,7 @@ class JenkinsJobManager {
 				println "-------> Expected jobs:"
 				expectedJobsPerBranch.each { println "           $it" }
 				List<String> jobNamesPerBranch = jobNames.findAll{ it.endsWith(branchToProcess.replaceAll(branchSeparator, '_')) }
+				jobsExpected.addAll(jobNamesPerBranch)
 				println "-------> Job Names per branch:"
 				jobNamesPerBranch.each { println "           $it" }
 				List<ConcreteJob> missingJobsPerBranch = expectedJobsPerBranch.findAll { expectedJob ->
@@ -113,7 +115,7 @@ class JenkinsJobManager {
 			}
 
 			List<String> deleteCandidates = jobNames.findAll {  it.contains(templateBranchToProcess) }
-			List<String> jobsToDeletePerBranch = deleteCandidates.findAll { candidate ->  !branchesWithCorrespondingTemplate.contains(candidate) }
+			List<String> jobsToDeletePerBranch = deleteCandidates - jobsExpected
 			
 			println "-----> Jobs to delete:"
 			jobsToDeletePerBranch.each { println "         $it" }
