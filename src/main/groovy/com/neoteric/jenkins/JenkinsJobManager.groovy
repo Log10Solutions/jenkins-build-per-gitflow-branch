@@ -113,11 +113,7 @@ class JenkinsJobManager {
 			}
 
 			List<String> deleteCandidates = jobNames.findAll {  it.contains(templateBranchToProcess) }
-//			List<String> jobsToDeletePerBranch = deleteCandidates.findAll { candidate ->
-//				!branchesWithCorrespondingTemplate.any { candidate.endsWith(it) }
-//			}
-
-			List<String> jobsToDeletePerBranch = deleteCandidates - branchesWithCorrespondingTemplate
+			List<String> jobsToDeletePerBranch = deleteCandidates.findAll { candidate ->  !branchesWithCorrespondingTemplate.contains(candidate) }
 			
 			println "-----> Jobs to delete:"
 			jobsToDeletePerBranch.each { println "         $it" }
