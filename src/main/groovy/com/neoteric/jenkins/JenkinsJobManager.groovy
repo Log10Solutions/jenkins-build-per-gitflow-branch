@@ -112,11 +112,13 @@ class JenkinsJobManager {
 				missingJobs.addAll(missingJobsPerBranch)
 			}
 
-			List<String> deleteCandidates = jobNames.findAll {  it.contains(branchSuffixMatch[templateBranchToProcess].replaceAll(branchSeparator, '_')) }
-			List<String> jobsToDeletePerBranch = deleteCandidates.findAll { candidate ->
-				!branchesWithCorrespondingTemplate.any { candidate.endsWith(it) }
-			}
+			//List<String> deleteCandidates = jobNames.findAll {  it.contains(templateBranchToProcess) }
+//			List<String> jobsToDeletePerBranch = deleteCandidates.findAll { candidate ->
+//				!branchesWithCorrespondingTemplate.any { candidate.endsWith(it) }
+//			}
 
+			List<String> jobsToDeletePerBranch = jobNames - branchesWithCorrespondingTemplate
+			
 			println "-----> Jobs to delete:"
 			jobsToDeletePerBranch.each { println "         $it" }
 			jobsToDelete.addAll(jobsToDeletePerBranch)
