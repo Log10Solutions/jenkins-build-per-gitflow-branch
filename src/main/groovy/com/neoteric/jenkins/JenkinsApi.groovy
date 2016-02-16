@@ -58,7 +58,7 @@ class JenkinsApi {
 
 	void cloneJobForBranch(String jobPrefix, ConcreteJob missingJob, String createJobInView, String gitUrl) {
 		String createJobInViewPath = resolveViewPath(createJobInView)
-		println "-----> createInView after" + createJobInView
+		println "-----> createInView after " + createJobInView
 		String missingJobConfig = configForMissingJob(missingJob, gitUrl)
 		TemplateJob templateJob = missingJob.templateJob
 
@@ -75,7 +75,7 @@ class JenkinsApi {
 	}
 
 	public String resolveViewPath(String createInView) {
-		if (!createInView) {
+		if (!createInView?.trim()) {
 			return ""
 		}
 		List<String> elements = createInView.tokenize("/")
