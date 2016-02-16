@@ -125,7 +125,8 @@ class JenkinsJobManager {
 		if (missingJobs) {
 			for(ConcreteJob missingJob in missingJobs) {
 				println "Creating missing job: ${missingJob.jobName} from ${missingJob.templateJob.jobName}"
-				jenkinsApi.cloneJobForBranch(jobPrefix, missingJob, createJobInView, gitUrl)
+				String createJobInViewTemp = createJobInView
+				jenkinsApi.cloneJobForBranch(jobPrefix, missingJob, createJobInViewTemp, gitUrl)
 				jenkinsApi.startJob(missingJob)
 			}
 		}
