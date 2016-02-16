@@ -90,6 +90,7 @@ class JenkinsApi {
 	}
 
 	public String processConfig(String entryConfig, String branchName, String gitUrl) {
+		println "=== processConfig entry : ${entryConfig}, branchName : ${branchName},  gitUrl : ${gitUrl} ==="
 		def root = new XmlParser().parseText(entryConfig)
 		// update branch name
 		root.scm.branches."hudson.plugins.git.BranchSpec".name[0].value = "*/$branchName"
